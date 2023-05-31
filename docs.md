@@ -247,8 +247,8 @@ Sets the bot position to the specified values in parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 function set_pos(x, y)
 ```
 
@@ -291,8 +291,8 @@ Sets the bot position to the specified tile position values in parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 function set_pos_at_tile(x, y)
 ```
 
@@ -336,9 +336,9 @@ Places specified block or background at specific position specified in the param
 #### Syntax
 
 ```lua
---@param number item_id (required)*
---@param number x (required)*
---@param number y (required)*
+--@param number item_id 
+--@param number x 
+--@param number y 
 function place_tile(item_id, x, y)
 ```
 
@@ -386,8 +386,8 @@ Punches at specified position in the parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 function punch_tile(x, y)
 ```
 
@@ -431,8 +431,8 @@ Wrenches at specified position in the parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 function wrench_tile(x, y)
 ```
 
@@ -476,8 +476,8 @@ Activates at specified position in the parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 function activate_tile(x, y)
 ```
 
@@ -521,7 +521,7 @@ Activates specified item.
 #### Syntax
 
 ```lua
---@param number item_id (required)*
+--@param number item_id 
 function activate_item(item_id)
 ```
 
@@ -556,7 +556,7 @@ Collects specified dropped item by object_id.
 #### Syntax
 
 ```lua
---@param number object_id (required)*
+--@param number object_id 
 function collect_item(object_id)
 ```
 
@@ -578,7 +578,7 @@ Dont forget to check the positions of the item from current position of the bots
 
 ```lua
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-bot:collect_item(0) -- collect dropped item that has object_id of 0 note need to check for possitions else you can get banned easly if the item is like on the other end of the world and you collect it
+bot:collect_item(0) -- collect dropped item that has object_id of 0 note need to check for positions else you can get banned easly if the item is like on the other end of the world and you collect it
 ```
 
 ---
@@ -624,7 +624,7 @@ Sets bot bubble to the specified state.
 #### Syntax
 
 ```lua
---@param number icon_state (required)*
+--@param number icon_state 
 function set_bubble(icon_state)
 ```
 
@@ -659,7 +659,7 @@ Says specified text to chat.
 #### Syntax
 
 ```lua
---@param string text (required)*
+--@param string text 
 function say(text)
 ```
 
@@ -694,7 +694,7 @@ Goes to the specified world.
 #### Syntax
 
 ```lua
---@param string world_name (required)*
+--@param string world_name 
 function warp(world_name)
 ```
 
@@ -761,7 +761,7 @@ Sets bot mac address.
 #### Syntax
 
 ```lua
---@param string mac (required)*
+--@param string mac 
 function set_mac(mac)
 ```
 
@@ -796,7 +796,7 @@ Sets action for bot.
 #### Syntax
 
 ```lua
---@param string action (required)*
+--@param string action 
 function set_action(action)
 ```
 
@@ -831,8 +831,8 @@ Find a path to the specified position in the parameters.
 #### Syntax
 
 ```lua
---@param number x (required)*
---@param number y (required)*
+--@param number x 
+--@param number y 
 --@param return table
 function find_path(x, y)
 ```
@@ -2526,7 +2526,7 @@ bot:add_function_call_callback( -- add the callback
 <a id="add_bot"></a>
 ###  add_bot function  *([bot_manager functions](#bot_manager-functions))*
 
-Add a new bot to the bot_manager.
+Add a new [bot](#bot-structure) to the bot_manager.
 
 #### Syntax
 
@@ -2549,7 +2549,7 @@ The password of the account.
 
 #### Return value
 
-Returns bot structure.
+Returns [bot](#bot-structure) structure.
 
 #### Remarks
 
@@ -2570,7 +2570,7 @@ local bot = bot_manager.add_bot("growbot")
 <a id="get_bot"></a>
 ###  get_bot function  *([bot_manager functions](#bot_manager-functions))*
 
-Get a bot from the bot_manager structure.
+Get a [bot](#bot-structure) from the bot_manager structure.
 
 #### Syntax
 
@@ -2588,7 +2588,7 @@ The growid of the bot you want to get.
 
 #### Return value
 
-Returns bot structure.
+Returns [bot](#bot-structure) structure.
 
 #### Remarks
 
@@ -2671,7 +2671,7 @@ bot_manager.remove_bots()
 <a id="get_bots"></a>
 ###  get_bots function  *([bot_manager functions](#bot_manager-functions))*
 
-Gets all bots from the bot_manager structure.
+Gets all [bots](#bot-structure) from the bot_manager structure.
 
 #### Syntax
 
@@ -2686,7 +2686,7 @@ None
 
 #### Return value
 
-Returns a table with all bots.
+Returns a table with all [bots](#bot-structure).
 
 #### Remarks
 
@@ -2983,6 +2983,46 @@ webhook.edit(url, message_id, message) -- edits the message you specified
 
 This section provides documentation on GrowBot structures. Below, you will find tables that represent all the structures available in the GrowBot Lua API.
 
+## bot structure
+
+The bot structure represents a bot.
+
+Type | Name | Description |
+:----: |  :----: | ---- |
+number | status | This field stores the current [bot_status](#bot_status-enum) of the bot like connected, disconnected etc. |
+string | name | This field stores the name of the bot. |
+string | name | This field stores the password of the bot. |
+number | gems | This field stores the gems amount the bot has. |
+number | level | This field stores the current level of the bot. |
+
+This structure contains functions presented below.
+  - [set_pos](#set_pos)
+  - [set_pos_at_tile](#set_pos_at_tile)
+  - [place_tile](#place_tile)
+  - [punch_tile](#punch_tile)
+  - [wrench_tile](#wrench_tile)
+  - [activate_tile](#activate_tile)
+  - [activate_item](#activate_item) 
+  - [collect_item](#collect_item)
+  - [collect_items](#collect_items)
+  - [set_bubble](#set_bubble)
+  - [say](#say)
+  - [warp](#warp)
+  - [exit_world](#exit_world)
+  - [set_mac](#set_mac)
+  - [set_action](#set_action)
+  - [find_path](#find_path)
+  - [get_local_player](#get_local_player)
+  - [get_inventory](#get_inventory)
+
+#### Examples
+
+```lua
+-
+```
+
+---
+
 ## world structure
 
 The world structure represents the current world in which the bot is located.
@@ -3148,7 +3188,7 @@ The game_packet structure represents a game packet used in the Growtopia game, w
 
 Type | Name | Description |
 :----: |  :----: | ---- |
-| number | type | This field stores the type of game_packet. |
+| number | type | This field stores the [game_packet_type](#game_packet_type-enum) of game_packet. |
 | number | byte1 | This field stores the byte1 also known as objtype, punchid, or npctype.  |
 | number | byte2 | This field stores the byte2 also known as count1, jump_count, build_range, npc_id, or lost_item_count. |
 | number | byte3 | This field stores the byte3 also known as count2, count, animation_type, punch_range, npc_action, particle_id, gained_item_count, dice_result, or fruit_count. |
@@ -3302,7 +3342,7 @@ The npc structure represents a non-playable character in the game such as bee's,
 
 Type | Name | Description |
 :----: |  :----: | ---- |
-| number | type | This field stores the type of the npc |
+| number | type | This field stores the [npc_type](#npc_type-enum) of the npc |
 | number | id | This field stores the unique indentifier of npc |
 | [vec2f](#vec2f-structure) | pos | This field stores the position of npc |
 | [vec2f](#vec2f-structure) | goal | This field stores the goal position for the npc |
@@ -3318,3 +3358,128 @@ This structure contains functions presented below.
 ```lua
 -
 ```
+
+---
+# Enums
+
+This section provides documentation on GrowBot enums. Below, you will find tables that represent all the enums available in the GrowBot Lua API.
+
+## game_packet_type enum
+
+| Number | Name |
+| :----: | :--- |
+|   0    | state |
+|   1    | call_function |
+|   2    | update_status |
+|   3    | tile_change_request |
+|   4    | send_map_data |
+|   5    | send_tile_update_data |
+|   6    | send_tile_update_data_multiple |
+|   7    | tile_activate_request |
+|   8    | tile_apply_damage |
+|   9    | send_inventory_state |
+|   10   | item_activate_request |
+|   11   | item_activate_object_request |
+|   12   | send_tile_tree_state |
+|   13   | modify_item_inventory |
+|   14   | item_change_object |
+|   15   | send_lock |
+|   16   | send_item_database_data |
+|   17   | send_particle_effect |
+|   18   | set_icon_state |
+|   19   | item_effect |
+|   20   | set_character_state |
+|   21   | ping_reply |
+|   22   | ping_request |
+|   23   | got_punched |
+|   24   | app_check_response |
+|   25   | app_integrity_fail |
+|   26   | disconnect |
+|   27   | battle_join |
+|   28   | battle_event |
+|   29   | use_door |
+|   30   | send_parental |
+|   31   | gone_fishin |
+|   32   | steam |
+|   33   | pet_battle |
+|   34   | npc |
+|   35   | special |
+|   36   | send_particle_effect_v2 |
+|   37   | active_arrow_to_item |
+|   38   | select_tile_index |
+|   39   | send_player_tribute_data |
+|   40   | ftue_set_item_to_quick_inventory |
+|   41   | pve_npc |
+|   42   | pvp_card_battle |
+|   43   | pve_apply_player_damage |
+|   44   | pve_npc_position_update |
+|   45   | set_extra_mods |
+|   46   | on_step_on_tile_mod |
+
+#### Examples
+
+```lua
+
+local packet = game_packet:new() -- creates new game_packet
+packet.type = game_packet_type.send_lock -- or just packet.type = 15
+```
+
+---
+ 
+---
+
+## npc_type enum
+
+| Number | Name |
+| :----: | :--- |
+|   0    | none |
+|   1    | ghost |
+|   2    | ghost_jar |
+|   3    | bee_swarm |
+|   4    | harvest_ghost |
+|   5    | eye_of_growganoth |
+|   6    | ghost_shark |
+|   7    | christmas_ghost |
+|   8    | blast |
+|   9    | pinata |
+|   10   | ghost_capture_machine |
+|   11   | boss_ghost |
+|   12   | mind_control_ghost |
+|   13   | ghost_be_gone |
+|   14   | hunted_turkey |
+|   15   | blaster |
+|   16   | thanksgiving_turkey_boss |
+|   17   | thanksgiving_turkey_boss_feather_projectile |
+|   18   | minion_turkey |
+
+#### Examples
+
+```lua
+local type = npc_type.ghost -- type variable will be = 1
+print(type) -- prints 1
+```
+
+---
+
+---
+
+## bot_status enum
+
+| Number | Name |
+| :----: | :---: |
+| 0 | disconnected |
+| 1 | connected |
+| 2 | connecting |
+| 3 | failed_server_data |
+| 4 | failed_login |
+| 5 | failed_proxy |
+
+
+#### Examples
+
+```lua
+local status = bot_status.connected -- status variable will be = 1
+print(status) --  prints 1
+```
+
+---
