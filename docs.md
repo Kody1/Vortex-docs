@@ -129,7 +129,7 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 | [print](#print) | Prints a specified text to GrowBot Console. |
 | [create_thread](#create_thread) | Creates a thread. |
 | [sleep](#sleep) | Sleeps for a specified amount of time. |
-| [send](#sleep) | Sends a webhook message. |
+| [send](#send) | Sends a webhook message. |
 | [edit](#edit) | Edits a webhook message. |
 
 ---
