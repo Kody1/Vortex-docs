@@ -1344,7 +1344,7 @@ None
 
 #### Remarks
 
-None
+Note that u can't use [sleep](#sleep) inside the callback function but u can use [create_thread](#create_thread) check examples below.
 
 #### Examples
 
@@ -1353,12 +1353,28 @@ local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (ch
 bot:add_game_message_callback( -- add the callback
   "callback name", 
   function(bot, packet)
-    local action = packet:get("action")
+    local action = packet:get("action") --(check get() documentation for more info)
     if action == "log" then
       print(string.format("%s: console log \"%s\"", bot.name, packet:get("msg")))
     end
   end
 )
+
+-- usage if you need to have sleep inside you callback
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+
+function callback_thread()
+    sleep(200) -- here you can use sleep and this line of code will sleep the program for 200 miliseconds (check sleep() documentation for more info)
+    print("hello from callback thread")
+end
+
+bot:add_game_message_callback( -- add the callback
+  "callback name", 
+  function(bot, packet)
+      create_thread(callback_thread)
+  end
+)
+
 ```
 
 ---
@@ -1392,7 +1408,7 @@ None
 
 #### Remarks
 
-None
+Note that u can't use [sleep](#sleep) inside the callback function but u can use [create_thread](#create_thread) check examples below.
 
 #### Examples
 
@@ -1404,6 +1420,22 @@ bot:add_game_packet_callback( -- add the callback
      print(bot.name)
   end
 )
+
+-- usage if you need to have sleep inside you callback
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+
+function callback_thread()
+    sleep(200) -- here you can use sleep and this line of code will sleep the program for 200 miliseconds (check sleep() documentation for more info)
+    print("hello from callback thread")
+end
+
+bot:add_game_packet_callback( -- add the callback
+  "callback name", 
+  function(bot, packet)
+      create_thread(callback_thread)
+  end
+)
+
 ```
 
 ---
@@ -1437,7 +1469,7 @@ None
 
 #### Remarks
 
-None
+Note that u can't use [sleep](#sleep) inside the callback function but u can use [create_thread](#create_thread) check examples below.
 
 #### Examples
 
@@ -1445,8 +1477,25 @@ None
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
 bot:add_function_call_callback( -- add the callback
   "callback name", 
-  function(bot, varlist, net_id, delay)
-     print(bot.name)
+  function(bot, var_list, net_id, delay)
+     if var_list[0]:get_string() == "OnDialogRequest" then
+      print("dialog text: " .. var_list[1]:get_string()) --(check get_string() documentation for more info)
+     end
+  end
+)
+
+-- usage if you need to have sleep inside you callback
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+
+function callback_thread()
+    sleep(200) -- here you can use sleep and this line of code will sleep the program for 200 miliseconds (check sleep() documentation for more info)
+    print("hello from callback thread")
+end
+
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, variant, net_id, delay)
+      create_thread(callback_thread)
   end
 )
 ```
@@ -1482,7 +1531,7 @@ None
 
 #### Remarks
 
-None
+Note that u can't use [sleep](#sleep) inside the callback function but u can use [create_thread](#create_thread) check examples below.
 
 #### Examples
 
@@ -1492,6 +1541,21 @@ bot:add_track_packet_callback( -- add the callback
   "callback name", 
   function(bot, packet)
      print(bot.name)
+  end
+)
+
+-- usage if you need to have sleep inside you callback
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+
+function callback_thread()
+    sleep(200) -- here you can use sleep and this line of code will sleep the program for 200 miliseconds (check sleep() documentation for more info)
+    print("hello from callback thread")
+end
+
+bot:add_track_packet_callback( -- add the callback
+  "callback name", 
+  function(bot, packet)
+      create_thread(callback_thread)
   end
 )
 ```
@@ -2206,7 +2270,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local type = var_list[1]:get_type() -- get the type
+      print(type) -- print out the type
+     end
+  end
+)
 ```
 
 ---
@@ -2238,7 +2310,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local float_value = var_list[1]:get_float() -- get the float from var_list[1]
+      print(float_value) -- print out the value we got from get_float function
+     end
+  end
+)
 ```
 
 ---
@@ -2270,7 +2350,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local string = var_list[0]:get_string() -- get the string from var_list[0]
+      print(string) -- print out the string we got from get_string function
+     end
+  end
+)
 ```
 
 ---
@@ -2302,7 +2390,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local vec2f = var_list[2]:get_vec2() -- get the vec2f from var_list[2]
+      print(vec2f.x) -- print out the x value of vec we got from get_vec2 function
+     end
+  end
+)
 ```
 
 ---
@@ -2334,7 +2430,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local vec3f = var_list[2]:get_vec3() -- get the vec3f from var_list[2]
+      print(vec3f.z) -- print out the z value of vec we got from get_vec3 function
+     end
+  end
+)
 ```
 
 ---
@@ -2366,7 +2470,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local uint = var_list[2]:get_uint() -- get the number (uint) from var_list[2]
+      print(uint) -- print out the number we got from get_uint function
+     end
+  end
+)
 ```
 
 ---
@@ -2398,7 +2510,15 @@ None
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local int = var_list[2]:get_int() -- get the number (int) from var_list[2]
+      print(int) -- print out the number we got from get_int function
+     end
+  end
+)
 ```
 
 ---
@@ -2796,14 +2916,14 @@ None
 
 #### Remarks
 
-None
+Check out discord webhook documentation [here](https://discord.com/developers/docs/resources/webhook#execute-webhook-jsonform-params)
 
 #### Examples
 
 ```lua
 
-url = 'your webhook url/link here'
-message = 'hello world'
+local url = 'your webhook url/link here'
+local message = '{"content":"hello"}'
 
 webhook.send(url, message) -- sends hello world message to the webhook
 ```
@@ -2844,15 +2964,15 @@ None
 
 #### Remarks
 
-None
+Check out discord webhook documentation [here](https://discord.com/developers/docs/resources/webhook#execute-webhook-jsonform-params)
 
 #### Examples
 
 ```lua
 
-url = 'your webhook url/link here'
-message_id = 'your message id here'
-message = 'hello world'
+local url = 'your webhook url/link here'
+local message_id = 'your message id here'
+local message = '{"content":"hello"}'
 
 webhook.edit(url, message_id, message) -- edits the message you specified
 ```
