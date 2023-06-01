@@ -1,7 +1,39 @@
 
+# Quick links
+
+- Main things
+  - [functions](#functions)
+  - [structures](#structures)
+  - [enums](#enums)
+<!-- - Example scripts
+  - [world clear]() 
+- Tutorials
+  - [convert Pandora functions to GrowBot]() -->
+
+
+---
+
 # Functions
 
 This section provides detailed documentation for GrowBot functions. Below, you will find tables showcasing all the functions available in the GrowBot Lua API, accompanied by concise descriptions of their functionality. To explore a specific function further, simply click on its name, represented like [this](#this). This will provide you with comprehensive information including its syntax, parameters, return values, additional remarks, and practical usage examples.
+
+- Quick links
+  - [connection functions](#connection-functions)
+  - [bot functions](#bot-functions)
+  - [packet functions](#packet-functions)
+  - [proxy functions](#proxy-functions)
+  - [callback functions](#callback-functions)
+  - [world functions](#world-functions)
+  - [inventory functions](#inventory-functions)
+  - [player functions](#player-functions)
+  - [tile functions](#tile-functions)
+  - [text_packet functions](#text_packet-functions)
+  - [variant functions](#variant-functions)
+  - [bot_manager functions](#bot_manager-functions)
+  - [item_manager functions](#item_manager-functions)
+  - [other functions](#other-functions)
+
+---
 
 ## connection functions
 | Function | Description |
@@ -71,7 +103,6 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 | [get_npc](#get_npc) | Gets specific npc in world. |
 | [get_npcs](#get_npcs) | Gets a table of all world npcs. |
 
-
 ## inventory functions
 | Function | Description |
 |  :----: | ---- |
@@ -88,6 +119,7 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 | Function | Description |
 |  :----: | ---- |
 | [get_extra](#get_extra) | Gets the extra data of tile. |
+| [is_tree_ready](#is_tree_ready) | Gets is the tree on tile is ready to harvest. |
 
 ## text_packet functions
 | Function | Description |
@@ -129,7 +161,7 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 | [print](#print) | Prints a specified text to GrowBot Console. |
 | [create_thread](#create_thread) | Creates a thread. |
 | [sleep](#sleep) | Sleeps for a specified amount of time. |
-| [send](#send) | Sends a webhook message. |
+| [send](#sleep) | Sends a webhook message. |
 | [edit](#edit) | Edits a webhook message. |
 
 ---
@@ -1946,7 +1978,7 @@ print(inventory_item.count) -- print the item count
 <a id="get_items_inv"></a>
 ###  get_items function  *([inventory functions](#inventory-functions))*
 
-Gets table of all the inventory items.
+Gets table of all the inventory [items](#inventory_item-structure).
 
 #### Syntax
 
@@ -1961,7 +1993,7 @@ None
 
 #### Return value
 
-Returns a table of all the items in inventory.
+Returns a table of all the [items](#inventory_item-structure) in inventory.
 
 #### Remarks
 
@@ -1985,7 +2017,7 @@ end
 <a id="get_clothes"></a>
 ###  get_clothes function  *([player functions](#player-functions))*
 
-Gets table of [clothes](#clothes_t-structure) structure that [player](#player-structure) is wearing.
+Gets table of [clothes](#clothes-structure) structure that [player](#player-structure) is wearing.
 
 #### Syntax
 
@@ -2000,7 +2032,7 @@ None
 
 #### Return value
 
-Returns a table of all [clothes](#clothes_t-structure) the [player](#player-structure) is wearing.
+Returns a table of all [clothes](#clothes-structure) the [player](#player-structure) is wearing.
 
 #### Remarks
 
@@ -2087,6 +2119,48 @@ local tile = world:get_tile(0, 0) -- get the first tile in the world
 local tile_extra = tile:get_extra() -- gets the tile extra data
 
 print(tile_extra.type) -- print tile extra data type
+```
+
+---
+
+<a id="is_tree_ready"></a>
+###  is_tree_ready function  *([tile functions](#tile-functions))*
+
+Checks if the tree on tile is ready or not.
+
+#### Syntax
+
+```lua
+--@return boolean
+function is_tree_ready()
+```
+
+#### Parameters
+
+None
+
+#### Return value
+
+Returns true if the tree on the tile is ready for harvest if no false.
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local world = bot:get_world() -- get the world structure
+local tile = world:get_tile(0, 0) -- get the first tile in the world
+
+local is_ready = tile:is_tree_ready()
+
+if is_ready then
+  print("tree is ready for harvest")
+else
+  print("tree is not ready for harvest")
+end
 ```
 
 ---
@@ -2559,10 +2633,10 @@ None
 
 ```lua
 --add bot with growid and pass
-local bot = bot_manager.add_bot("growbot", "pass")
+local bot = bot_manager.add_bot("growid", "pass")
 
 --add bot with guest growid
-local bot = bot_manager.add_bot("growbot")
+local bot = bot_manager.add_bot("growid")
 ```
 
 ---
@@ -2597,7 +2671,7 @@ None
 #### Examples
 
 ```lua
-local bot = bot_manager.get_bot("growbot")
+local bot = bot_manager.get_bot("growid")
 ```
 
 ---
@@ -2632,7 +2706,7 @@ None
 #### Examples
 
 ```lua
-bot_manager.remove_bot("growbot")
+bot_manager.remove_bot("growid")
 ```
 
 ---
@@ -2698,7 +2772,7 @@ None
 local bots = bot_manager.get_bots()
 
 for _, bot in pairs(bots) do
-  print(bot:get_local_player().name) -- print all the bots names
+  print(bot.name) -- print all the bots names
 end
 ```
 
@@ -2983,6 +3057,25 @@ webhook.edit(url, message_id, message) -- edits the message you specified
 
 This section provides documentation on GrowBot structures. Below, you will find tables that represent all the structures available in the GrowBot Lua API.
 
+- Quick links
+  - [bot structure](#bot-structure) 
+  - [world structure](#world-structure)
+  - [inventory structure](#inventory-structure)
+  - [inventory_item structure](#inventory_item-structure)
+  - [player structure](#player-structure)
+  - [tile structure](#tile-structure)
+  - [tile_extra structure](#tile_extra-structure)
+  - [world_object structure](#world_object-structure)
+  - [game_packet structure](#game_packet-structure)
+  - [vec2f structure](#vec2f-structure)
+  - [vec3f structure](#vec3f-structure)
+  - [vec2i structure](#vec2i-structure)
+  - [item structure](#item-structure)
+  - [clothes structure](#clothes-structure)
+  - [npc structure](#npc-structure)
+
+---
+
 ## bot structure
 
 The bot structure represents a bot.
@@ -3018,7 +3111,11 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+-- bot = bot structure
+print(bot.name) -- print out the bot name
+print(bot.level) -- print out the bot level
+print(bot.gems) -- print out the bot gems
 ```
 
 ---
@@ -3030,7 +3127,7 @@ The world structure represents the current world in which the bot is located.
 Type | Name | Description |
 :----: |  :----: | ---- |
 string | name | This field stores the name of the world in which the bot is currently located. |
-[vec2i](#vec2i) | size | This field stores the dimensions of the world. It represents the width and height of the world, specified as a two-dimensional vector of integers. The size indicates the extent of the world in terms of tiles or blocks. The world standard size is `x = 100` and `y = 60`, |
+[vec2i](#vec2i-structure) | size | This field stores the dimensions of the world. It represents the width and height of the world, specified as a two-dimensional vector of integers. The size indicates the extent of the world in terms of tiles or blocks. The world standard size is `x = 100` and `y = 60`, |
 
 This structure contains functions presented below.
   - [get_world](#get_world)
@@ -3047,7 +3144,12 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+-- world = world structure
+print(world.name) -- prints out the world name the bot is currently in
+print(world.size.x) -- prints out the x size of the world also known as world width/lenght
+print(world.size.y) -- prints out the y size of the world also known as world height
 ```
 
 ---
@@ -3068,7 +3170,17 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local inventory = bot:get_inventory()
+-- inventory = inventory structure
+print(inventory.size) -- prints out the inventory size
+
+for _, inventory_item in pairs(inventory:get_items()) do -- loops all items in inventory and prints their names
+  -- inventory_item = inventory_item structure
+  local item = item_manager.get_item(inventory_item.item_id) -- gets the item structure from item manager
+  -- item = item structure
+  print(item.name) -- prints out the item name  
+end
 ```
 
 ---
@@ -3088,7 +3200,12 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local inventory = bot:get_inventory() 
+-- inventory = inventory structure
+local inventory_item = inventory:get_item(2) -- get dirt item
+-- inventory_item = inventory_item structure
+print(inventory_item.count) -- print out the count of item in inventory in this case the dirt amount in inventory
 ```
 
 ---
@@ -3102,7 +3219,7 @@ Type | Name | Description |
 string | name | This field stores the player's name, commonly referred to as the GrowID or guest GrowID. |
 number | net_id | This field stores the net_id of the player, indicating the unique identifier for the player in world. |
 number | user_id | This field stores the user_id of the player, serving as the unique identifier for the player's account. |
-[vec2f](#vec2f) | pos | This field stores the player's position within the world, specifying the coordinates where the player is located. The position is represented using a two-dimensional vector with floating-point values, denoting the player's X and Y coordinates. |
+[vec2f](#vec2f-structure) | pos | This field stores the player's position within the world, specifying the coordinates where the player is located. The position is represented using a two-dimensional vector with floating-point values, denoting the player's X and Y coordinates. |
 
 This structure contains functions presented below.
   - [get_clothes](#get_clothes)
@@ -3111,11 +3228,17 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+
+for _, player in pairs(world:get_players()) do -- prints all player names in the world
+  -- player = player structure
+  print(player.name)
+end
 ```
 
 ---
-<a id="tile"></a>
+
 ## tile structure
 
 The tile structure represents a block, background, or a combination of both within a world.
@@ -3123,7 +3246,7 @@ The tile structure represents a block, background, or a combination of both with
 Type | Name | Description |
 :----: |  :----: | ---- |
 number | index | This field stores the tile index, serving as unique identifier of the tile. |
-[vec2i](#vec2i) | pos | This field stores the position of the tile, indicating its coordinates within the world. The position is represented by numeric values, such as `x = 10` and `y = 5.` Typically, the maximum values for x and y depend on the size of the world, but a common range is `x <= 100` and `y <= 60.`|
+[vec2i](#vec2i-structure) | pos | This field stores the position of the tile, indicating its coordinates within the world. The position is represented by numeric values, such as `x = 10` and `y = 5.` Typically, the maximum values for x and y depend on the size of the world, but a common range is `x <= 100` and `y <= 60.`|
 number | foreground | This field holds the foreground itemId, representing the item identifier associated with the block of the tile. It commonly refers to items like `Lava` with an itemId of `4`.|
 number | background | This field holds the background itemId, representing the item identifier associated with the background of the tile. It commonly refers to items like `Cave Background` with an itemId of `14`.|
 number  | flags  | this field stores additional flags associated with the tile, indicating further attributes or properties. These flags provide information about the tile's behavior or characteristics, such as the presence of fire, the enabled status of a jammer, or other relevant features. |
@@ -3134,14 +3257,20 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+
+for _, tile in pairs(world:get_tiles()) do -- prints all tile foreground item_id's in the world
+  -- tile = tile structure
+  print(tile.foreground)
+end
 ```
 
 ---
 
 ## tile_extra structure
 
-The tile_extra structure represents the additional data associated with a [tile](#tile).
+The tile_extra structure represents the additional data associated with a [tile](#tile-structure).
 
 Type | Name | Description |
 :----: |  :----: | ---- |
@@ -3154,7 +3283,15 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+
+for _, tile in pairs(world:get_tiles()) do -- prints all tile extra types in the world
+  -- tile = tile structure
+  local tile_extra = tile:get_extra()
+  -- tile_extra = tile_extra structure
+  print(tile_extra.type)
+end
 ```
 
 ---
@@ -3166,7 +3303,7 @@ The world_object structure represents a dropped item within the world and has fe
 Type | Name | Description |
 :----: |  :----: | ---- |
 number | item_id | This field stores the item id of the world_object, often referred to as the item id of a dropped item within the world.
- [vec2f](#vec2f) | pos | This field stores the position of the world_object, indicating the coordinates where the dropped item is located within the world.
+ [vec2f](#vec2f-structure) | pos | This field stores the position of the world_object, indicating the coordinates where the dropped item is located within the world.
  number | count | This field stores the count of the world_object, representing the quantity of the dropped item within the world.
  number | flags | This field stores the flags of the world_object, denoting additional attributes or properties associated with the dropped item within the world.
  number | object_id | This field stores the object id of the world_object, representing a unique identifier assigned to the dropped item within the world.
@@ -3177,7 +3314,15 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+
+for _, object in pairs(world:get_objects()) do -- prints all dropped items names in the world
+  -- object = world_object structure
+  local item = item_manager.get_item(object.item_id) -- gets the item structure from item manager
+  -- item = item structure
+  print(item.name) -- prints out the item name  
+end
 ```
 
 ---
@@ -3197,8 +3342,8 @@ Type | Name | Description |
 | number | flags | This field stores the flags also known as packet_flags. |
 | number | float1 | This field stores the float1 also known as float_var, struct_flags, int_var, water_speed, or obj_alt_count. |
 | number | main_value | This field stores the main_values also known as int_data, ping_item, elapsed_ms, delay, tile_damage, item_id, item_speed, effect_flags, object_id, hash, verify_pos, client_hack_type. |
-| [vec2f](#vec2f) | vec1 | This field stores the vec1 also known as vec or (vec_x, vec_y). |
-| [vec2f](#vec2f) | vec2 | This field stores the vec1 also known as vec2 or (vec2_x, vec2_y). |
+| [vec2f](#vec2f-structure) | vec1 | This field stores the vec1 also known as vec or (vec_x, vec_y). |
+| [vec2f](#vec2f-structure) | vec2 | This field stores the vec1 also known as vec2 or (vec2_x, vec2_y). |
 | number | float2 | This field stores the float2 also known as particle_time.  |
 | number | tile_x | This field stores the tile_x also known as int_x, state1. |
 | number | tile_y | This field stores the tile_y also known as int_y, state2. |
@@ -3211,12 +3356,18 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+
+local packet = game_packet:new() -- creates new game_packet
+packet.type = game_packet_type.set_icon_state -- or just packet.type = 18
+packet.net_id = bot:get_local_player().net_id
+packet.tile_x = 1 -- icon state
+
+bot:send_game_packet(packet) -- sends the packet to server
 ```
 
 ---
 
-<a id="vec2f"></a>
 ## vec2f structure
 
 The vec2f structure represents a two-dimensional vector with an x and y coordinate. It is used to store floating-point values for both the x and y coordinates. The 'x' field specifically stores the x-coordinate value as a float, while the 'y' field stores the y-coordinate value as a float.
@@ -3234,12 +3385,17 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local player = bot:get_local_player() -- get player structure
+local position = player.pos -- gets the position in tile
+-- position = vec2f structure
+print(position.x) -- print the x position
+print(position.y) -- print the y position
 ```
 
 ---
 
-<a id="vec3f"></a>
+
 ## vec3f structure
 
 The vec3f structure represents a three-dimensional vector with x, y, and z coordinates. It is used to store numerical values for each coordinate. The 'x' field specifically stores the x-coordinate value, which can be represented as a floating-point number or simply as a float, such as `50.0`. Similarly, the 'y' and 'z' fields store the y-coordinate and z-coordinate values, respectively, following the same representation.
@@ -3257,12 +3413,23 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:add_function_call_callback( -- add the callback
+  "callback name", 
+  function(bot, var_list, net_id, delay)
+      local vec3f = var_list[2]:get_vec3() -- get the vec3f from var_list[2]
+      -- vec3f = vec3f structure
+      print(vec3f.z) -- print out the z value of vec we got from get_vec3 function
+      print(vec3f.x) -- print out the x value of vec we got from get_vec3 function
+      print(vec3f.y) -- print out the y value of vec we got from get_vec3 function
+     end
+  end
+)
 ```
 
 ---
 
-<a id="vec2i"></a>
+
 ## vec2i structure
 
 The vec2i structure represents a two-dimensional vector with an x and y coordinate. It is used to store integer values for both the x and y coordinates. The 'x' field specifically stores the x-coordinate value as a number, such as `100`. Similarly, the 'y' field stores the y-coordinate value as a number, also illustrated by the example value of `100`.
@@ -3279,7 +3446,13 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local player = bot:get_local_player() -- get player structure
+local position = player:get_tile_pos() -- gets the position in tile
+-- position = vec2i structure
+
+print(position.x) -- print the x position
+print(position.y) -- print the y position
 ```
 
 ---
@@ -3302,16 +3475,18 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local item = item_manager.get_item(2) -- get Dirt item structure
+-- item = item structure
+print(item.name) -- prints out "Dirt"
 ```
 
 ---
 
-<a id="clothes_t"></a>
-## clothes_t structure
+
+## clothes structure
 
 
-The clothes_t structure represents player clothes.
+The clothes structure represents player clothes.
 
 Type | Name | Description |
 :----: |  :----: | ---- |
@@ -3330,12 +3505,24 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local player = bot:get_local_player() -- get player structure
+local clothes = player:get_clothes() -- get all clothes that player is wearing
+-- clothes = clothes structure
+
+print(clothes.hat) -- prints the hat item_id the player is wearing
+print(clothes.shirt) -- prints the shirt item_id the player is wearing
+print(clothes.pants) -- prints the pants item_id the player is wearing
+print(clothes.shoes) -- prints the shoes item_id the player is wearing
+print(clothes.face) -- prints the face item_id the player is wearing
+print(clothes.back) -- prints the back item_id the player is wearing
+print(clothes.hair) -- prints the hair item_id the player is wearing
+print(clothes.hair) -- prints the hair item_id the player is wearing
 ```
 
 ---
 
-<a id="npc"></a>
+
 ## npc structure
 
 The npc structure represents a non-playable character in the game such as bee's, ghost's, pinatas's and etc.
@@ -3356,13 +3543,28 @@ This structure contains functions presented below.
 #### Examples
 
 ```lua
--
+local bot = bot_manager.get_bot("growid")
+local world = bot:get_world()
+
+for _, npc in pairs(world:get_npcs()) do -- prints all npc's id's in the world
+  -- npc = npc structure
+  print(npc.id) -- prints out the npc id
+end
 ```
 
 ---
+
+
 # Enums
 
 This section provides documentation on GrowBot enums. Below, you will find tables that represent all the enums available in the GrowBot Lua API.
+
+- Quick links
+  - [game_packet_type enum](#game_packet_type-enum) 
+  - [npc_type enum](#npc_type-enum)
+  - [bot_status enum](#bot_status-enum)
+
+---
 
 ## game_packet_type enum
 
@@ -3425,8 +3627,6 @@ packet.type = game_packet_type.send_lock -- or just packet.type = 15
 ```
 
 ---
- 
----
 
 ## npc_type enum
 
@@ -3458,8 +3658,6 @@ packet.type = game_packet_type.send_lock -- or just packet.type = 15
 local type = npc_type.ghost -- type variable will be = 1
 print(type) -- prints 1
 ```
-
----
 
 ---
 
