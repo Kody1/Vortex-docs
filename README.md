@@ -2,7 +2,7 @@
 [server](https://discord.gg/ym6rHJtTek)
 
 # Download (06/04/2023)
-[download](bit.ly/3WNz9cs)
+[download](https://bit.ly/3WNz9cs)
 
 # Changelogs
 * added remember login
