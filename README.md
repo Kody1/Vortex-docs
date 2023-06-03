@@ -1,4 +1,4 @@
-# GrowBot-docs
+# VorteX-docs
 [server](https://discord.gg/ym6rHJtTek)
 
 # Download (06/04/2023)
