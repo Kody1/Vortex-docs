@@ -2,9 +2,8 @@
 [server](https://discord.gg/ym6rHJtTek)
 
 # Download (06/04/2023)
-[download](https://bit.ly/3WNz9cs)
+[download](https://cdn.discordapp.com/attachments/900373529093091359/1114756490427891842/Vortex.exe)
 
 # Changelogs
-* added remember login
-* added error_connecting and captcha_failed login fail texts
-* fixed boss ghost crash
+* fixed callback create_thread crash
+* added tile:is_provider_ready()
