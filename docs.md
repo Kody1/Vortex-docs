@@ -8,14 +8,14 @@
 <!-- - Example scripts
   - [world clear]() 
 - Tutorials
-  - [convert Pandora functions to GrowBot]() -->
+  - [convert Pandora functions to Vortex]() -->
 
 
 ---
 
 # Functions
 
-This section provides detailed documentation for GrowBot functions. Below, you will find tables showcasing all the functions available in the GrowBot Lua API, accompanied by concise descriptions of their functionality. To explore a specific function further, simply click on its name, represented like [this](#this). This will provide you with comprehensive information including its syntax, parameters, return values, additional remarks, and practical usage examples.
+This section provides detailed documentation for Vortex functions. Below, you will find tables showcasing all the functions available in the Vortex Lua API, accompanied by concise descriptions of their functionality. To explore a specific function further, simply click on its name, represented like [this](#this). This will provide you with comprehensive information including its syntax, parameters, return values, additional remarks, and practical usage examples.
 
 - Quick links
   - [connection functions](#connection-functions)
@@ -47,6 +47,8 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 |  :----: | ---- |
 | [set_pos](#set_pos) | Sets bot to the specified position. |
 | [set_pos_at_tile](#set_pos_at_tile) | Sets bot to the specified tile position. |
+| [move](#move) | Moves the bot to specifed side by one block. |
+| [set_direction](#set_direction) | Sets the direction the bot is looking at. |
 | [place_tile](#place_tile) | Bot places specified tile to the specified tile position. |
 | [punch_tile](#punch_tile) | Bot punches the specified tile position. |
 | [wrench_tile](#wrench_tile) | Bot wrenches the speficied tile position. |
@@ -108,6 +110,8 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 |  :----: | ---- |
 | [get_item](#get_item_inv) | Gets specified item from inventory. |
 | [get_items](#get_items_inv) | Gets a table of all inventory items. |
+| [get_item_count](#get_item_count) | Gets count of item specified from the inventory. |
+| [has_item](#has_item) | Checks if theres a specified item in inventory. |
 
 ## player functions
 | Function | Description |
@@ -119,7 +123,8 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 | Function | Description |
 |  :----: | ---- |
 | [get_extra](#get_extra) | Gets the extra data of tile. |
-| [is_tree_ready](#is_tree_ready) | Gets is the tree on tile is ready to harvest. |
+| [is_tree_ready](#is_tree_ready) | Checks whether the tree on the tile is ready to be harvested. |
+| [is_provider_ready](#is_provider_ready) | Checks whether the provider on the tile is ready to be harvested. |
 
 ## text_packet functions
 | Function | Description |
@@ -145,9 +150,11 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 |  :----: | ---- |
 | [add_bot](#add_bot) | Adds a new specified bot. |
 | [get_bot](#get_bot) | Gets specified bot. |
+| [get_selected_bot](#get_selected_bot) | Gets the currently selected bot in the GUI. |
+| [get_bots](#get_bots) | Gets a table of all bots. |
 | [remove_bot](#remove_bot) | Removes specified bot. |
 | [remove_bots](#remove_bots) | Removes all bots. |
-| [get_bots](#get_bots) | Gets a table of all bots. |
+
 
 ## item_manager functions
 | Function | Description |
@@ -158,7 +165,7 @@ This section provides detailed documentation for GrowBot functions. Below, you w
 ## other functions
 | Function | Description |
 |  :----: | ---- |
-| [print](#print) | Prints a specified text to GrowBot Console. |
+| [print](#print) | Prints a specified text to Vortex Console. |
 | [create_thread](#create_thread) | Creates a thread. |
 | [sleep](#sleep) | Sleeps for a specified amount of time. |
 | [send](#send) | Sends a webhook message. |
@@ -310,7 +317,9 @@ bot:set_pos(1550.0, 2500.0) -- sets bot x position to 1550.0 and y to 2500.0
 
 -- better use case 
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-bot:set_pos(bot.pos.x + 32.0, bot.pos.y) -- sets the bot position to the current x + 32.0 and to current y this means the bot will simply just move right by one block
+local player = bot:get_local_player() -- get bot player structure
+
+bot:set_pos(player.pos.x + 32.0, player.pos.y) -- sets the bot position to the current x + 32.0 and to current y this means the bot will simply just move right by one block
 ```
 
 ---
@@ -354,8 +363,83 @@ bot:set_pos_at_tile(2, 10) -- sets bot x tile position to 2 and y to 10
 
 -- better use case 
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-local bot_pos = bot:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
+local player = bot:get_local_player() -- get bot player structure
+local bot_pos = player:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
 bot:set_pos_at_tile(bot_pos.x + 1, bot_pos.y) -- sets the bot position to the current x + 1 and to current y this means the bot will simply just move right by one block
+```
+
+---
+
+<a id="move"></a>
+###  move function  *([Bot functions](#bot-functions))*
+
+Moves the bot to the specified position in parameter by one block.
+
+#### Syntax
+
+```lua
+--@param number direction 
+function move(direction)
+```
+
+#### Parameters
+
+`direction`
+
+the [direction](#direction-enum) you want the bot to move by one block.
+
+
+#### Return value
+
+None
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:move(direction.left) -- moves the bot to the left side by one block
+```
+
+---
+
+<a id="set_direction"></a>
+###  set_direction function  *([Bot functions](#bot-functions))*
+
+Sets the direction the bot will look at.
+
+#### Syntax
+
+```lua
+--@param number direction 
+function set_direction(direction)
+```
+
+#### Parameters
+
+`direction`
+
+the [direction](#direction-enum) you want the bot to look at.
+
+
+#### Return value
+
+None
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+bot:set_direction(direction.left) -- this will make the bot look at left side
+-- or
+bot:set_direction(directio.right) -- this will make the bot look at right side
 ```
 
 ---
@@ -404,7 +488,8 @@ bot:place_tile(4, 2, 10) -- places lava which item_id = 4 and places it to x pos
 
 -- better use case
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-local bot_pos = bot:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
+local player = bot:get_local_player() -- get bot player structure
+local bot_pos = player:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
 bot:place_tile(4, bot_pos.x + 1 , bot_pos.y) -- places lava which itemId = 4 and places it to current x positon + 1 and the y to current this means the bot will just place the lava to its right
 ```
 
@@ -449,7 +534,8 @@ bot:punch_tile(2, 10) -- punches at x positon 2 and the y 10
 
 -- better use case
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-local bot_pos = bot:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
+local player = bot:get_local_player() -- get bot player structure
+local bot_pos = player:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
 bot:punch_tile(bot_pos.x + 1 , bot_pos.y) -- punches at current x positon + 1 and the y to current bot position this means the bot will punch to its right
 ```
 
@@ -494,7 +580,8 @@ bot:wrench_tile(2, 10) -- wrenches at x positon 2 and the y 10
 
 -- better use case
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-local bot_pos = bot:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
+local player = bot:get_local_player() -- get bot player structure
+local bot_pos = player:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
 bot:wrench_tile(bot_pos.x + 1 , bot_pos.y) -- wrenches at current x positon + 1 and the y to current bot position this means the bot will wrench to its right
 ```
 
@@ -539,7 +626,8 @@ bot:activate_tile(2, 10) -- activate at x positon 2 and the y 10
 
 -- better use case
 local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
-local bot_pos = bot:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
+local player = bot:get_local_player() -- get bot player structure
+local bot_pos = player:get_tile_pos() -- get the current position of bot (check get_tile_pos() documentation for more info)
 bot:activate_tile(bot_pos.x + 1 , bot_pos.y) -- activate at current x positon + 1 and the y to current bot position this means the bot will wrench to its right 
 ```
 
@@ -2013,6 +2101,86 @@ end
 
 ---
 
+<a id="get_item_count"></a>
+###  get_item_count function  *([inventory functions](#inventory-functions))*
+
+Gets the count of item specified in inventory.
+
+#### Syntax
+
+```lua
+--@param number item_id
+--@return number
+function get_item_count(item_id)
+```
+
+#### Parameters
+
+`item_id`
+
+the item_id of the item that u want to get count of.
+
+#### Return value
+
+Returns the count of the item.
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local inventory = bot:get_inventory() -- get inventory structure
+local dirt_count = inventory:get_item_count(2) -- gets the dirt count in inventory
+```
+
+---
+
+<a id="has_item"></a>
+###  has_item function  *([inventory functions](#inventory-functions))*
+
+Checks if theres a specified item in inventory.
+
+#### Syntax
+
+```lua
+--@param number item_id
+--@return boolean
+function has_item(item_id)
+```
+
+#### Parameters
+
+`item_id`
+
+the item_id of the item that u want to check if exists in inventory.
+
+#### Return value
+
+Returns true if exists if not returns false.
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local inventory = bot:get_inventory() -- get inventory structure
+local has_dirt = inventory:has_item(2) -- checks if the bot has dirt in inventory
+
+if has_dirt then
+  print("bot has dirt")
+else
+  print("bot doest have dirt")
+end
+```
+
+---
+
 
 <a id="get_clothes"></a>
 ###  get_clothes function  *([player functions](#player-functions))*
@@ -2160,6 +2328,48 @@ if is_ready then
   print("tree is ready for harvest")
 else
   print("tree is not ready for harvest")
+end
+```
+
+---
+
+<a id="is_provider_ready"></a>
+###  is_provider_ready function  *([tile functions](#tile-functions))*
+
+Checks if the provider on tile is ready or not.
+
+#### Syntax
+
+```lua
+--@return boolean
+function is_provider_ready()
+```
+
+#### Parameters
+
+None
+
+#### Return value
+
+Returns true if the provider on the tile is ready for harvest if no false.
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_bot("growid") -- get the bot by specified growid (check get_bot() documentation for more info)
+local world = bot:get_world() -- get the world structure
+local tile = world:get_tile(0, 0) -- get the first tile in the world
+
+local is_ready = tile:is_provider_ready()
+
+if is_ready then
+  print("provider is ready for harvest")
+else
+  print("provider is not ready for harvest")
 end
 ```
 
@@ -2676,6 +2886,37 @@ local bot = bot_manager.get_bot("growid")
 
 ---
 
+<a id="get_selected_bot"></a>
+###  get_selected_bot function  *([bot_manager functions](#bot_manager-functions))*
+
+Get a [bot](#bot-structure) from the bot_manager structure.
+
+#### Syntax
+
+```lua
+function get_selected_bot()
+```
+
+#### Parameters
+
+None
+
+#### Return value
+
+Returns [bot](#bot-structure) structure.
+
+#### Remarks
+
+None
+
+#### Examples
+
+```lua
+local bot = bot_manager.get_selected_bot()
+```
+
+---
+
 
 <a id="remove_bot"></a>
 ###  remove_bot function  *([bot_manager functions](#bot_manager-functions))*
@@ -2855,7 +3096,7 @@ end
 <a id="print"></a>
 ###  print function  *([other functions](#other-functions))*
 
-Prints a specified text in parameter to the GrowBot Console.
+Prints a specified text in parameter to the Vortex Console.
 
 #### Syntax
 
@@ -2868,7 +3109,7 @@ function print(text)
 
 `text`
 
-The text you want to print in GrowBot Console.
+The text you want to print in Vortex Console.
 
 #### Return value
 
@@ -2881,7 +3122,7 @@ None
 #### Examples
 
 ```lua
-print("hello world") -- prints "hello world" to GrowBot Console
+print("hello world") -- prints "hello world" to Vortex Console
 ```
 
 ---
@@ -2917,10 +3158,18 @@ None
 ```lua
 
 function hello_world()
-  print("Hello") -- prints "Hello" to the GrowBot Console
+  print("Hello") -- prints "Hello" to the Vortex Console
 end
 
 create_thread(hello_world) -- starts a thread and runs the hello_world world function which prints out "Hello"
+
+
+-- example if you have parameters in you function
+function hello_world(text)
+  print(text) -- prints the specified text in the text parameter to the Vortex Console in this case we passed in "Hello" so it will print "Hello" to Vortex Console
+end
+
+create_thread(hello_world, "Hello") -- starts a thread and runs the hello_world world function which willl print out "Hello" since we pass the parameter here in create_thread function
 ```
 
 ---
@@ -3055,7 +3304,7 @@ webhook.edit(url, message_id, message) -- edits the message you specified
 
 # Structures
 
-This section provides documentation on GrowBot structures. Below, you will find tables that represent all the structures available in the GrowBot Lua API.
+This section provides documentation on Vortex structures. Below, you will find tables that represent all the structures available in the Vortex Lua API.
 
 - Quick links
   - [bot structure](#bot-structure) 
@@ -3091,6 +3340,8 @@ number | level | This field stores the current level of the bot. |
 This structure contains functions presented below.
   - [set_pos](#set_pos)
   - [set_pos_at_tile](#set_pos_at_tile)
+  - [move](#move)
+  - [set_direction](#set_direction)
   - [place_tile](#place_tile)
   - [punch_tile](#punch_tile)
   - [wrench_tile](#wrench_tile)
@@ -3166,6 +3417,8 @@ number | size | This field stores the size of backpack. |
 This structure contains functions presented below.
   - [get_item](#get_item_inv)
   - [get_items](#get_items_inv)
+  - [get_item_count](#get_item_count)
+  - [has_item](#has_item)
 
 #### Examples
 
@@ -3253,6 +3506,8 @@ number  | flags  | this field stores additional flags associated with the tile, 
 
 This structure contains functions presented below.
   - [get_extra](#get_extra)
+  - [is_tree_ready](#is_tree_ready)
+  - [is_provider_ready](#is_provider_ready)
 
 #### Examples
 
@@ -3557,7 +3812,7 @@ end
 
 # Enums
 
-This section provides documentation on GrowBot enums. Below, you will find tables that represent all the enums available in the GrowBot Lua API.
+This section provides documentation on Vortex enums. Below, you will find tables that represent all the enums available in the Vortex Lua API.
 
 - Quick links
   - [game_packet_type enum](#game_packet_type-enum) 
@@ -3678,6 +3933,26 @@ print(type) -- prints 1
 ```lua
 local status = bot_status.connected -- status variable will be = 1
 print(status) --  prints 1
+```
+
+---
+
+## direction enum
+
+| Number | Name |
+| :----: | :---: |
+| 0 | up |
+| 1 | down |
+| 2 | left |
+| 3 | right |
+
+
+
+#### Examples
+
+```lua
+local direction = direction.left -- status variable will be = 1
+print(direction) --  prints 2
 ```
 
 ---
